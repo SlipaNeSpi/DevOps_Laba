@@ -1,5 +1,8 @@
 from flask import render_template, request
 from app import app
+import csv
+import os
+from datetime import datetime
 
 def celsius_to_fahrenheit(c):
     return c * 9/5 + 32
@@ -52,3 +55,41 @@ def index():
             error = "Ошибка: введите числовое значение температуры."
 
     return render_template('index.html', result=result, error=error)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    result = None
+    error = None
+    if request.method == 'POST':
+        try:
+            # ... (код конвертации)
+            if not error:
+                # Сохраняем в историю
+                history_file = os.path.join(os.path.dirname(__file__), 'history.csv')
+                file_exists = os.path.isfile(history_file)
+                with open(history_file, 'a', newline='') as f:
+                    writer = csv.writer(f)
+                    if not file_exists:
+                        writer.writerow(['timestamp', 'input_temp', 'input_unit', 'c', 'f', 'k'])
+                    writer.writerow([
+                        datetime.now().isoformat(),
+                        temp,
+                        unit,
+                        result['c'],
+                        result['f'],
+                        result['k']
+                    ])
+        except ValueError:
+            error = "Ошибка: введите числовое значение температуры."
+
+    return render_template('index.html', result=result, error=error)
+
+@app.route('/history')
+def history():
+    history_file = os.path.join(os.path.dirname(__file__), 'history.csv')
+    records = []
+    if os.path.exists(history_file):
+        with open(history_file, 'r') as f:
+            reader = csv.DictReader(f)
+            records = list(reader)
+    return render_template('history.html', records=records)

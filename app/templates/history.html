@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>История конвертаций</title>
+</head>
+<body>
+    <h1>История конвертаций</h1>
+    <table border="1">
+        <tr>
+            <th>Время</th>
+            <th>Исходная температура</th>
+            <th>Единица</th>
+            <th>°C</th>
+            <th>°F</th>
+            <th>K</th>
+        </tr>
+        {% for r in records %}
+        <tr>
+            <td>{{ r.timestamp }}</td>
+            <td>{{ r.input_temp }}</td>
+            <td>{{ r.input_unit }}</td>
+            <td>{{ r.c }}</td>
+            <td>{{ r.f }}</td>
+            <td>{{ r.k }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="/">Назад</a>
+</body>
+</html>

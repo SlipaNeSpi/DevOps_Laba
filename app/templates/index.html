@@ -25,5 +25,8 @@
         <p>Фаренгейт: {{ result.f }} °F</p>
         <p>Кельвин: {{ result.k }} K</p>
     {% endif %}
+
+    <hr>
+    <p><a href="{{ url_for('history') }}">📜 Посмотреть историю конвертаций</a></p>
 </body>
 </html>
