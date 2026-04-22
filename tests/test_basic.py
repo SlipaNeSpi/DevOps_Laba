@@ -54,7 +54,9 @@ def test_index_route_get():
     with app.test_client() as client:
         response = client.get('/')
         assert response.status_code == 200
-        assert b'Конвертер температур' in response.data
+        # Получаем ответ как текст (Unicode)
+        data = response.get_data(as_text=True)
+        assert 'Конвертер температур' in data
     print("✓ GET / возвращает 200 и содержит заголовок")
     return True
 
@@ -65,7 +67,8 @@ def test_history_route():
     with app.test_client() as client:
         response = client.get('/history')
         assert response.status_code == 200
-        assert b'История конвертаций' in response.data
+        data = response.get_data(as_text=True)
+        assert 'История конвертаций' in data
     print("✓ GET /history возвращает 200")
     return True
 
@@ -79,9 +82,9 @@ def test_post_conversion():
             'unit': 'C'
         })
         assert response.status_code == 200
-        # Проверяем, что результат отображается
-        assert b'212.0' in response.data  # 100°C = 212°F
-        assert b'373.15' in response.data  # 100°C = 373.15K
+        data = response.get_data(as_text=True)
+        assert '212.0' in data   # 100°C = 212°F
+        assert '373.15' in data  # 100°C = 373.15K
     print("✓ POST / с валидными данными работает")
     return True
 
@@ -95,7 +98,8 @@ def test_post_invalid_input():
             'unit': 'C'
         })
         assert response.status_code == 200
-        assert b'Ошибка' in response.data or b'error' in response.data
+        data = response.get_data(as_text=True)
+        assert 'Ошибка' in data
     print("✓ POST / с некорректными данными показывает ошибку")
     return True
 
