@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Конвертер температур</title>
+</head>
+<body>
+    <h1>Конвертер температур</h1>
+    <form method="post">
+        <input type="text" name="temperature" placeholder="Введите температуру" required>
+        <select name="unit">
+            <option value="C">Цельсий (°C)</option>
+            <option value="F">Фаренгейт (°F)</option>
+            <option value="K">Кельвин (K)</option>
+        </select>
+        <button type="submit">Конвертировать</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+        <h2>Результаты:</h2>
+        <p>Цельсий: {{ result.c }} °C</p>
+        <p>Фаренгейт: {{ result.f }} °F</p>
+        <p>Кельвин: {{ result.k }} K</p>
+    {% endif %}
+</body>
+</html>
